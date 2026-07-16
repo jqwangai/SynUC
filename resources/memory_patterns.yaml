@@ -1,0 +1,553 @@
+language: "en-US"
+library_name: "implicit_conflict_operator_memory_speaking"
+
+theoretical_framework:
+  name: "Hymes SPEAKING model"
+  rationale: >
+    This library uses Dell Hymes's SPEAKING model of communicative events as the theoretical framework
+    for implicit conflict operator memory. Historical queries in a multi-turn dialogue are treated as
+    ongoing specifications of a communicative event; if a later query implicitly changes one dimension of
+    Setting and Scene, Participants, Ends, Act Sequence, Key, Instrumentalities, Norms, or Genre, and the
+    new specification cannot be satisfied together with the historically still-valid specification, an
+    implicit conflict is formed. The eight shifts are not treated as a mutually exclusive exhaustive set;
+    during generation, each pattern marks only the primary conflict focus, while real samples may contain
+    secondary overlap.
+
+boundary_principles:
+  - "Setting and Scene only handles external situational conditions, such as time, place, publication occasion, and use environment; it does not handle content amount or level of elaboration."
+  - "Act Sequence only handles content scope, information order, task steps, argumentation flow, and interaction flow; it does not handle external scenes."
+  - "Ends only handles changes in purpose implied by use, placement, evaluation context, or action consequences; avoid writing it directly as an explicit purpose revision."
+  - "Key only handles tone, emotion, posture, and stance intensity; do not classify genre changes or delivery-purpose changes under Key."
+  - "Instrumentalities only handles medium, channel, language code, format carrier, tools, and technical dependencies; it does not handle social norms themselves."
+  - "Norms only handles evidence standards, compliance boundaries, domain conventions, and acceptability rules; it does not handle genre names or medium names."
+  - "Genre only handles text genres or social activity types; it does not handle the tone, purpose, or capacity within that genre."
+
+description: >
+  Agent memory for implicit-conflict query generation.
+  This file stores only reusable conflict-generation knowledge; it does not store concrete samples,
+  validation results, sampling probabilities, or information about explicit/implicit source.
+  Each operator corresponds to one shift in the SPEAKING model; each pattern represents a transferable
+  incompatible relationship between "historical feature - current feature".
+
+operators:
+  - operator_id: setting_scene_shift
+    definition: >
+      The current query implicitly changes the external situational conditions of the communicative event,
+      including time, place, publication occasion, use environment, social scene, or physical/operational
+      context, thereby conflicting with situational specifications that remain valid in history.
+      This shift focuses on "in what external scene this event occurs or is used"; it is not responsible
+      for the level of content elaboration.
+    patterns:
+      - pattern_id: time_occasion_mismatch
+        description: >
+          The history constrains a certain temporal condition or occasion rhythm, while the current request
+          implies that another time occasion is needed for it to be reasonable.
+        historical_constraint_feature: "Constrains completion deadline, presentation duration, release time, meeting occasion, or event rhythm"
+        retrieval_terms: >
+          time constraint, deadline, due date, completion deadline, delivery time, release time, presentation duration,
+          meeting time, activity schedule, occasion rhythm, time window, deadline, due date, time limit, delivery time,
+          release time, presentation duration, meeting schedule, event timing
+        new_constraint_feature: "Introduces a use context requiring different temporal conditions, occasion rhythm, or release timing"
+        conflict_focus: "External time occasion incompatibility"
+        positive_trajectories:
+          - context: "Prepare a short classroom presentation script"
+            historical_constraint:
+              dimension: "time_occasion"
+              value: "5-minute classroom presentation"
+            new_constraint:
+              dimension: "time_occasion"
+              value: "long-duration interactive workshop"
+            user_query_with_new_constraint: "Add an icebreaker, group exercises, wall-posted outcomes, and a Q&A process to this classroom presentation script."
+        negative_trajectories: []
+
+      - pattern_id: physical_context_mismatch
+        description: >
+          The history constrains a certain physical environment or use location, while the current request
+          implies another physical environment.
+        historical_constraint_feature: "Constrains physical contexts such as classroom, meeting room, booth, outdoor setting, on-the-move use, or desktop setup"
+        retrieval_terms: >
+          physical scene, use location, spatial environment, classroom, meeting room, booth, outdoor, mobile scene,
+          desktop environment, on-site environment, device environment, physical context, location, classroom,
+          meeting room, booth, outdoor, mobile use, desktop setup, on-site environment
+        new_constraint_feature: "Introduces a request that depends on another type of physical context or use location"
+        conflict_focus: "Physical use context incompatibility"
+        positive_trajectories:
+          - context: "Write an exhibit introduction for passersby"
+            historical_constraint:
+              dimension: "physical_context"
+              value: "passerby introduction for an exhibit"
+            new_constraint:
+              dimension: "physical_context"
+              value: "desktop lookup and record-taking scene"
+            user_query_with_new_constraint: "Add numbered indexes, parameter comparisons, and blank operation-record fields to this exhibit introduction."
+        negative_trajectories: []
+
+      - pattern_id: social_scene_mismatch
+        description: >
+          The history constrains a certain social communication scene, while the current request implies
+          expectations from another social scene.
+        historical_constraint_feature: "Constrains social scenes such as private communication, public release, classroom explanation, formal meeting, or internal discussion"
+        retrieval_terms: >
+          social scene, publicity level, private communication, public release, classroom explanation, formal meeting,
+          internal discussion, social relationship, organizational occasion, publication occasion, social scene,
+          private communication, public release, classroom, formal meeting, internal discussion, publicity level
+        new_constraint_feature: "Introduces another scene of privacy, publicity, formality, or social relationship"
+        conflict_focus: "Social scene incompatibility"
+        positive_trajectories:
+          - context: "Explain a private project"
+            historical_constraint:
+              dimension: "social_scene"
+              value: "private project explanation"
+            new_constraint:
+              dimension: "social_scene"
+              value: "public admissions consultation scene"
+            user_query_with_new_constraint: "Add a background paragraph at the beginning, and put a QR-code consultation entry and unified contact person at the end."
+        negative_trajectories: []
+
+  - operator_id: participants_shift
+    definition: >
+      The current query implicitly changes the participants in the communicative event, including target
+      audience, speaker identity, role relationship, knowledge community, professional background,
+      authority/responsibility relationship, or stakeholders, thereby conflicting with participant
+      specifications that remain valid in history. This shift focuses on "who speaks to whom, and who
+      needs to understand or act".
+    patterns:
+      - pattern_id: audience_knowledge_mismatch
+        description: >
+          The history and the current request presuppose audiences with different knowledge levels,
+          professional backgrounds, or learning stages.
+        historical_constraint_feature: "Constrains target audience, knowledge foundation, learning stage, professional background, or comprehension ability"
+        retrieval_terms: >
+          target audience, reader level, listener background, knowledge foundation, learning stage, professional background,
+          comprehension ability, beginner, expert, non-technical audience, audience, reader level, knowledge level,
+          expertise, beginner, expert, non-technical audience, comprehension ability
+        new_constraint_feature: "Introduces another type of audience, knowledge foundation, learning stage, professional background, or comprehension ability"
+        conflict_focus: "Audience knowledge condition incompatibility"
+        positive_trajectories:
+          - context: "Explain a science topic for high school students"
+            historical_constraint:
+              dimension: "audience_knowledge"
+              value: "popular-science explanation for high school students"
+            new_constraint:
+              dimension: "audience_knowledge"
+              value: "master's/doctoral professional audience"
+            user_query_with_new_constraint: "Add spectral decomposition, Hamiltonian setup, and formula derivation."
+        negative_trajectories: []
+
+      - pattern_id: speaker_role_mismatch
+        description: >
+          The history and the current request presuppose different identities for the expresser or different
+          subjects bearing responsibility.
+        historical_constraint_feature: "Constrains expresser identity, professional role, institutional stance, responsibility owner, or speaking qualification"
+        retrieval_terms: >
+          expresser identity, speaker role, author identity, professional role, institutional stance, responsibility owner,
+          speaking qualification, official voice, personal perspective, speaker role, author identity, professional role,
+          institutional stance, responsibility owner, spokesperson, official voice
+        new_constraint_feature: "Introduces another expresser identity, professional role, institutional stance, responsibility owner, or speaking qualification"
+        conflict_focus: "Expresser role incompatibility"
+        positive_trajectories:
+          - context: "Describe a product from consumer experience"
+            historical_constraint:
+              dimension: "speaker_role"
+              value: "product consumer experience"
+            new_constraint:
+              dimension: "speaker_role"
+              value: "brand publisher voice"
+            user_query_with_new_constraint: "Add the sentence \"We are delighted to bring this all-new upgrade\" at the beginning, then connect the rest as version update notes."
+        negative_trajectories: []
+
+      - pattern_id: stakeholder_mismatch
+        description: >
+          The historical product serves one type of reader or decision maker, while the current request
+          implies the judgment standards of another type of stakeholder.
+        historical_constraint_feature: "Constrains service target, decision maker, executor, reviewer, approver, or stakeholder"
+        retrieval_terms: >
+          service target, decision maker, executor, reviewer, approver, stakeholder, client, user, investor,
+          manager, reviewer, stakeholder, decision maker, executor, reviewer, approver, client, user, investor,
+          manager, target beneficiary
+        new_constraint_feature: "Introduces another type of service target, decision maker, executor, reviewer, approver, or stakeholder"
+        conflict_focus: "Stakeholder expectation incompatibility"
+        positive_trajectories:
+          - context: "Write a project task description"
+            historical_constraint:
+              dimension: "stakeholder"
+              value: "project task description"
+            new_constraint:
+              dimension: "stakeholder"
+              value: "investment decision-making scene"
+            user_query_with_new_constraint: "Add the budget gap, return period, and next-round fund-use table to this project task description."
+        negative_trajectories: []
+
+  - operator_id: ends_shift
+    definition: >
+      The current query implicitly changes the communicative purpose, task goal, or expected result through
+      concrete use, placement, evaluation context, or action consequences, thereby conflicting with purpose
+      specifications that remain valid in history. This shift focuses on "why express it, and what result is
+      expected". During generation, avoid directly saying "change it to marketing/change it to review/change
+      it to persuasion"; instead, hide the purpose in a concrete carrying context.
+    patterns:
+      - pattern_id: information_to_action_mismatch
+        description: >
+          The historical purpose leans toward description, explanation, recording, or summary, while the
+          current use implies prompting purchase, registration, voting, ordering, application, adoption, or
+          another action.
+        historical_constraint_feature: "Constrains purposes of information delivery, objective description, knowledge explanation, recording, or summary"
+        retrieval_terms: >
+          information delivery, objective description, knowledge explanation, factual record, neutral summary,
+          informative purpose, explanatory purpose, non-marketing, non-conversion, information purpose,
+          explanation, objective description, knowledge sharing, record keeping, summary, informative intent
+        new_constraint_feature: "Introduces action conversion, decision promotion, or behavior facilitation through a concrete use scene"
+        conflict_focus: "Information purpose and action purpose incompatibility"
+        positive_trajectories:
+          - context: "Write a neutral product introduction"
+            historical_constraint:
+              dimension: "communicative_purpose"
+              value: "objective and neutral product introduction"
+            new_constraint:
+              dimension: "communicative_purpose"
+              value: "e-commerce conversion purpose"
+            user_query_with_new_constraint: "Put this product introduction on the first screen of the detail page, with one line of copy that can sit above the purchase button."
+        negative_trajectories: []
+
+      - pattern_id: learning_to_assessment_mismatch
+        description: >
+          The historical purpose leans toward learning comprehension or teaching support, while the current
+          use implies review, screening, assessment, or ranking.
+        historical_constraint_feature: "Constrains purposes of learning, teaching, comprehension, onboarding, explanation, or mastery support"
+        retrieval_terms: >
+          learning purpose, teaching purpose, comprehension support, introductory explanation, course material,
+          study guidance, knowledge mastery, teaching support, training material, learning purpose, teaching,
+          education, tutorial, onboarding, study guide, instructional material, comprehension support
+        new_constraint_feature: "Introduces an evaluation purpose through review, assessment, screening, ranking, or expert judgment scenes"
+        conflict_focus: "Learning purpose and evaluation purpose incompatibility"
+        positive_trajectories:
+          - context: "Write an introductory research explanation"
+            historical_constraint:
+              dimension: "communicative_purpose"
+              value: "introductory research explanation"
+            new_constraint:
+              dimension: "communicative_purpose"
+              value: "scientific research review scene"
+            user_query_with_new_constraint: "Add sections on innovation-point comparison, differences from existing approaches, and feasibility risks to this research explanation."
+        negative_trajectories: []
+
+  - operator_id: act_sequence_shift
+    definition: >
+      The current query implicitly changes the content scope, information order, task steps, reasoning chain,
+      interaction flow, or stage arrangement of the communicative act, thereby conflicting with action-sequence
+      specifications that remain valid in history. This shift focuses on "what to talk about, in what order,
+      and through what process"; it is not responsible for external time or place.
+    patterns:
+      - pattern_id: content_scope_mismatch
+        description: >
+          The history constrains the topic, material, object, or processing scope, while the current request
+          implies content scope with different boundaries.
+        historical_constraint_feature: "Constrains topic boundary, material scope, object range, or processed part"
+        retrieval_terms: >
+          topic boundary, content scope, material scope, object range, processed part, analyze only a certain part,
+          excluded scope, coverage, research object, topic scope, content scope, material boundary, object range,
+          coverage, included parts, excluded parts, scope limitation
+        new_constraint_feature: "Introduces a different topic boundary, material scope, object range, or processed part"
+        conflict_focus: "Content scope incompatibility"
+        positive_trajectories:
+          - context: "Analyze only the methods section of a paper"
+            historical_constraint:
+              dimension: "content_scope"
+              value: "only analyze the methods section of the paper"
+            new_constraint:
+              dimension: "content_scope"
+              value: "full-paper scope"
+            user_query_with_new_constraint: "Add a manual control-group experiment at the beginning, then add interpretation of experimental results and a limitations discussion at the end."
+        negative_trajectories: []
+
+      - pattern_id: granularity_mismatch
+        description: >
+          The history constrains the output to be brief, overview-level, compressed, or conclusion-only, while
+          the current request implies step-by-step elaboration, item-by-item explanation, complete derivation,
+          or multi-layer argumentation.
+        historical_constraint_feature: "Constrains brief explanation, overview, compressed expression, conclusion-only output, or a small number of key points"
+        retrieval_terms: >
+          brief explanation, overview, abstract, compressed expression, conclusion only, a few key points,
+          short answer, high-level summary, no elaboration, low detail, brief, concise, overview, summary,
+          compressed, conclusion only, key points, short answer, high-level, low detail
+        new_constraint_feature: "Introduces detailed elaboration, a complete process, item-by-item explanation, reasoning branches, or long-chain explanation"
+        conflict_focus: "Information granularity incompatibility"
+        positive_trajectories:
+          - context: "Summarize a paper within 300 Chinese characters"
+            historical_constraint:
+              dimension: "granularity"
+              value: "summarize the paper in under 300 Chinese characters"
+            new_constraint:
+              dimension: "granularity"
+              value: "long-form interpretation"
+            user_query_with_new_constraint: "Add background, method details, result interpretation, and follow-up questions."
+        negative_trajectories: []
+
+  - operator_id: key_shift
+    definition: >
+      The current query implicitly changes the tone, emotion, posture, stance intensity, seriousness,
+      affective coloring, or psychological effect of the communication, thereby conflicting with tone
+      specifications that remain valid in history. This shift focuses on "in what tone and posture to express
+      it"; it is not responsible for genre or communicative purpose itself.
+    patterns:
+      - pattern_id: stance_intensity_mismatch
+        description: >
+          The history requires neutrality, restraint, balance, or objectivity, while the current request
+          implies a clear stance, strong evaluation, or emotional mobilization.
+        historical_constraint_feature: "Constrains neutrality, restraint, balance, objectivity, or low evaluation intensity"
+        retrieval_terms: >
+          neutral, restrained, balanced, objective, low evaluation intensity, avoid incitement, avoid stance,
+          rational expression, mild wording, impartial, neutral, restrained, balanced, objective, low intensity,
+          non-persuasive, unbiased, measured tone, mild wording
+        new_constraint_feature: "Introduces a clear stance, strong evaluation, emotional mobilization, or value-judgment posture"
+        conflict_focus: "Stance intensity incompatibility"
+        positive_trajectories:
+          - context: "Write a neutral product review"
+            historical_constraint:
+              dimension: "stance_intensity"
+              value: "neutral product review"
+            new_constraint:
+              dimension: "stance_intensity"
+              value: "positive evaluation guidance"
+            user_query_with_new_constraint: "Add three paragraphs of pleasantly surprised feedback from users after receiving the product, organized by the easiest-to-perceive highlights and post-use changes."
+        negative_trajectories: []
+
+      - pattern_id: formality_mismatch
+        description: >
+          The history and the current request have different expectations for degree of formality and
+          expressive posture.
+        historical_constraint_feature: "Constrains expressive postures such as formal, serious, authoritative, standardized, intimate, relaxed, or casual"
+        retrieval_terms: >
+          degree of formality, serious, authoritative, standardized, intimate, relaxed, casual, colloquial,
+          written style, politeness level, expressive posture, formality, formal, serious, authoritative,
+          casual, intimate, relaxed, colloquial, written style, politeness level
+        new_constraint_feature: "Introduces another degree of formality, seriousness, authority, intimacy, or casualness"
+        conflict_focus: "Formality incompatibility"
+        positive_trajectories:
+          - context: "Draft a formal notice"
+            historical_constraint:
+              dimension: "formality"
+              value: "formal notice"
+            new_constraint:
+              dimension: "formality"
+              value: "warm colloquial reassurance"
+            user_query_with_new_constraint: "Start by saying \"Everyone, don't worry yet\" to steady the mood."
+        negative_trajectories: []
+
+      - pattern_id: affective_frame_mismatch
+        description: >
+          The history constrains a certain emotional atmosphere or psychological effect, while the current
+          request implies another affective frame.
+        historical_constraint_feature: "Constrains affective frames such as reassurance, encouragement, calmness, solemnity, humor, or tension"
+        retrieval_terms: >
+          affective frame, emotional atmosphere, reassurance, encouragement, calmness, solemnity, humor,
+          tension, anxiety relief, positive emotion, psychological effect, affective frame, emotional tone,
+          reassuring, encouraging, calm, solemn, humorous, tense, mood, psychological effect
+        new_constraint_feature: "Introduces another emotional atmosphere, psychological effect, attitudinal tone, or affective frame"
+        conflict_focus: "Affective frame incompatibility"
+        positive_trajectories:
+          - context: "Write a reassuring examination explanation"
+            historical_constraint:
+              dimension: "affective_frame"
+              value: "reassuring explanation for an examination"
+            new_constraint:
+              dimension: "affective_frame"
+              value: "urgent risk atmosphere"
+            user_query_with_new_constraint: "Add a waiting countdown at the beginning, and after each body paragraph add one sentence about which follow-up arrangements may be affected by a delay."
+        negative_trajectories: []
+
+  - operator_id: instrumentalities_shift
+    definition: >
+      The current query implicitly changes the communication channel, medium form, language code, format carrier,
+      tool dependency, technical platform, expression modality, or runtime tool, thereby conflicting with
+      medium/tool specifications that remain valid in history. This shift focuses on "through what channel,
+      tool, code, or medium it is expressed".
+    patterns:
+      - pattern_id: medium_channel_mismatch
+        description: >
+          The history and the current request target different media or channels, causing expression length,
+          layout, interaction mode, or visualization form to be incompatible.
+        historical_constraint_feature: "Constrains medium channels such as paper, email, webpage, short video, speech, table, chart, or mobile"
+        retrieval_terms: >
+          medium channel, communication carrier, paper, email, webpage, short video, speech, table, chart,
+          mobile, screen display, page layout, medium, channel, paper, email, webpage, short video, speech,
+          table, chart, mobile, screen, platform, layout
+        new_constraint_feature: "Introduces another medium, channel, carrier, platform, or presentation mode"
+        conflict_focus: "Medium channel incompatibility"
+        positive_trajectories:
+          - context: "Write a research paper abstract"
+            historical_constraint:
+              dimension: "medium_channel"
+              value: "research paper abstract"
+            new_constraint:
+              dimension: "medium_channel"
+              value: "speech"
+            user_query_with_new_constraint: "Add transitions, pause cues, and question positions between each paragraph of this research abstract."
+        negative_trajectories: []
+
+      - pattern_id: language_code_mismatch
+        description: >
+          The history constrains language, code, register, symbol system, or terminology system, while the
+          current request implies another code system.
+        historical_constraint_feature: "Constrains language, code, register, symbol system, terminology system, or expression code"
+        retrieval_terms: >
+          language, code, register, symbol system, terminology system, expression code, professional abbreviation,
+          natural language, programming language, markup language, language, code, register, symbol system,
+          terminology, jargon, abbreviation, natural language, programming language, markup
+        new_constraint_feature: "Introduces another language, code, register, symbol system, terminology system, or expression code"
+        conflict_focus: "Language code and symbol system incompatibility"
+        positive_trajectories:
+          - context: "Explain a condition without abbreviations"
+            historical_constraint:
+              dimension: "language_code"
+              value: "condition explanation without abbreviations"
+            new_constraint:
+              dimension: "language_code"
+              value: "medical field codes"
+            user_query_with_new_constraint: "Change the results section of this condition explanation into the original medical-record field headers exported by the system, and fill the following values according to the headers."
+        negative_trajectories: []
+
+      - pattern_id: tool_dependency_mismatch
+        description: >
+          The history constrains tools, dependencies, or technical environment, while the current request
+          implies additional tools, external services, or dedicated hardware.
+        historical_constraint_feature: "Constrains tool availability, dependency conditions, external resources, platform, or tech stack"
+        retrieval_terms: >
+          tool availability, dependency condition, external resource, platform restriction, tech stack, API,
+          database, hardware, software environment, offline environment, online service, tool dependency,
+          platform, tech stack, API, database, hardware, software environment, offline, online service,
+          external resource
+        new_constraint_feature: "Introduces additional tools, external services, APIs, databases, hardware, or software environment"
+        conflict_focus: "Tool dependency incompatibility"
+        positive_trajectories:
+          - context: "Design an offline app homepage"
+            historical_constraint:
+              dimension: "tool_dependency"
+              value: "offline app homepage"
+            new_constraint:
+              dimension: "tool_dependency"
+              value: "networked external service"
+            user_query_with_new_constraint: "Add a widget to this app homepage that automatically shows the weather for tomorrow and the day after tomorrow based on the current location."
+        negative_trajectories: []
+
+  - operator_id: norms_shift
+    definition: >
+      The current query implicitly changes the interaction norms, interpretation norms, evidence standards,
+      compliance boundaries, domain conventions, evaluation rules, or acceptability standards that the
+      communication should follow, thereby conflicting with normative specifications that remain valid in
+      history. This shift focuses on "what is appropriate, acceptable, valid, or compliant expression".
+    patterns:
+      - pattern_id: evidence_standard_mismatch
+        description: >
+          The history constrains a certain evidence source, data range, or proof standard, while the current
+          request implies another evidence standard.
+        historical_constraint_feature: "Constrains evidence source, data scale, material boundary, citation requirement, or proof standard"
+        retrieval_terms: >
+          evidence source, data scale, material boundary, citation requirement, proof standard, sample size,
+          data quality, statistical significance, verifiability, audit evidence, evidence source, data size,
+          material boundary, citation requirement, proof standard, sample size, data quality, verification,
+          audit evidence
+        new_constraint_feature: "Introduces higher or different types of evidence, citation, verification, audit, or proof requirements"
+        conflict_focus: "Evidence norm incompatibility"
+        positive_trajectories:
+          - context: "Write a three-item data analysis"
+            historical_constraint:
+              dimension: "evidence_standard"
+              value: "three-item data analysis"
+            new_constraint:
+              dimension: "evidence_standard"
+              value: "statistical testing standard"
+            user_query_with_new_constraint: "Add p-values, confidence intervals, and robustness notes after the conclusions of this data analysis."
+        negative_trajectories: []
+
+      - pattern_id: domain_norm_mismatch
+        description: >
+          The history and the current request rely on different domain conventions or professional norms.
+        historical_constraint_feature: "Constrains a domain norm, professional convention, format rule, or evaluation criterion"
+        retrieval_terms: >
+          domain norm, professional convention, format rule, evaluation criterion, academic norm, industry standard,
+          legal norm, medical norm, engineering norm, review criterion, domain norm, professional convention,
+          format rule, evaluation criteria, academic standard, industry standard, legal norm, review rubric
+        new_constraint_feature: "Introduces another domain norm, professional convention, format rule, or evaluation criterion"
+        conflict_focus: "Domain norm incompatibility"
+        positive_trajectories:
+          - context: "Write a popular-science article on theory"
+            historical_constraint:
+              dimension: "domain_norm"
+              value: "popular-science article on theory"
+            new_constraint:
+              dimension: "domain_norm"
+              value: "mathematical proof norm"
+            user_query_with_new_constraint: "Add lemmas, propositions, and proof processes at the end."
+        negative_trajectories: []
+
+      - pattern_id: safety_compliance_mismatch
+        description: >
+          The history constrains safety, compliance, privacy protection, or low-risk expression, while the
+          current request implies higher risk or compliance pressure.
+        historical_constraint_feature: "Constrains safety boundary, compliance requirement, privacy protection, risk level, or ethical norm"
+        retrieval_terms: >
+          safety boundary, compliance requirement, privacy protection, risk level, ethical norm, sensitive information,
+          personal information, low-risk expression, safety restriction, responsibility boundary, safety boundary,
+          compliance, privacy, risk level, ethics, sensitive information, personal data, low-risk, safety policy
+        new_constraint_feature: "Introduces risk, exposure, action intensity, or compliance pressure beyond the historical boundary"
+        conflict_focus: "Safety and compliance norm incompatibility"
+        positive_trajectories:
+          - context: "Write an interview report with privacy protection"
+            historical_constraint:
+              dimension: "safety_compliance"
+              value: "interview report privacy"
+            new_constraint:
+              dimension: "safety_compliance"
+              value: "personal identity exposure"
+            user_query_with_new_constraint: "Add a follow-up visit registration form to the appendix of this interview report, as well as the contact information of each interviewee."
+        negative_trajectories: []
+
+  - operator_id: genre_shift
+    definition: >
+      The current query implicitly changes the genre, text type, literary/formal category, activity type, or
+      socially recognizable expression category to which the communicative event belongs, thereby conflicting
+      with genre specifications that remain valid in history. This shift focuses on "what type of text or
+      activity this should be understood as"; it is not responsible for tone, purpose, or medium itself.
+    patterns:
+      - pattern_id: text_genre_mismatch
+        description: >
+          The history and the current request respectively require different text genres.
+        historical_constraint_feature: "Constrains text genres such as paper, abstract, report, story, advertisement, manual, checklist, email, script, or news"
+        retrieval_terms: >
+          text genre, document type, paper, abstract, report, story, advertisement, manual, checklist, email,
+          script, news, memo, proposal, text genre, document type, paper, abstract, report, story, advertisement,
+          manual, checklist, email, script, news, memo, proposal
+        new_constraint_feature: "Introduces another text genre, writing type, or document type"
+        conflict_focus: "Text genre incompatibility"
+        positive_trajectories:
+          - context: "Write an academic research abstract"
+            historical_constraint:
+              dimension: "text_genre"
+              value: "academic research abstract"
+            new_constraint:
+              dimension: "text_genre"
+              value: "fundraising pitch text"
+            user_query_with_new_constraint: "Highlight the market pain point, growth potential, and why the team is worth attention now at the beginning."
+        negative_trajectories: []
+
+      - pattern_id: activity_genre_mismatch
+        description: >
+          The history and the current request understand the task as different social activity types.
+        historical_constraint_feature: "Constrains activity types such as teaching, reporting, negotiation, application, entertainment, sales, diagnosis, debugging, or review"
+        retrieval_terms: >
+          activity type, task type, teaching, reporting, negotiation, application, entertainment, sales, diagnosis,
+          debugging, review, interview, exam, consultation, activity genre, task type, teaching, reporting,
+          negotiation, application, entertainment, sales, diagnosis, debugging, review, interview, exam
+        new_constraint_feature: "Introduces another communicative activity type, task activity type, or social practice type"
+        conflict_focus: "Activity type incompatibility"
+        positive_trajectories:
+          - context: "Explain a concept in a classroom"
+            historical_constraint:
+              dimension: "activity_genre"
+              value: "classroom concept explanation"
+            new_constraint:
+              dimension: "activity_genre"
+              value: "exam assessment activity"
+            user_query_with_new_constraint: "Add scoring points, timed-answer requirements, and follow-up questions that differentiate proficiency levels."
+        negative_trajectories: []

@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+
+data/cache/*
+!data/cache/.gitkeep
+data/output/*
+!data/output/.gitkeep
+data/runtime/*
+!data/runtime/.gitkeep
+data/training/*
+!data/training/.gitkeep
+data/input/*
+!data/input/dialogues.example.jsonl
