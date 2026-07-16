@@ -4,7 +4,7 @@
 > responds.
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Resources](https://img.shields.io/badge/Resources-Coming_Soon-orange)](#-open-source-resources)
+[![Resources](https://img.shields.io/badge/Resources-Hugging_Face-yellow?logo=huggingface)](#-open-source-resources)
 
 In human–LLM dialogue, a follow-up user utterance may implicitly conflict with
 an earlier intent. If the conflict goes unnoticed, the LLM can misinterpret the
@@ -53,12 +53,11 @@ the central entry point for all open-source project artifacts.
 
 | Resource | Description | Access |
 | --- | --- | --- |
-| 🗃️ **UC-Data** | A 2,487-sample user-side conflict training set synthesized from WildChat. | *Coming soon* |
-| 📊 **UC-Bench** | A human-annotated benchmark for user-side conflict detection. | *Coming soon* |
-| 🧠 **Model Weights** | Qwen3.5-4B trained on UC-Data for user-side conflict detection. | *Coming soon* |
+| 🗃️ **UC-Data** | A 2,487-sample user-side conflict training set synthesized from WildChat. | [Hugging Face](https://huggingface.co/datasets/jqwang/UC-Data) |
+| 📊 **UC-Bench** | A human-annotated benchmark for user-side conflict detection. | [Hugging Face](https://huggingface.co/datasets/jqwang/UC-Bench) |
+| 🧠 **Model Weights** | Qwen3.5-4B trained on UC-Data for user-side conflict detection. | [Hugging Face](https://huggingface.co/jqwang/SynUC-Qwen3.5-4B-LoRA) |
 
-> 🔔 Watch this repository for release updates. Download links and usage
-> instructions will be added to this section once the resources are public.
+> 🔔 The datasets, benchmark, and model weights are available on Hugging Face.
 
 ## 🗂️ Repository structure
 
