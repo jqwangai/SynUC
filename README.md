@@ -304,3 +304,24 @@ Run the offline conversion tests with:
 python -m unittest discover -s tests
 ```
 
+
+
+## Citation
+
+If you find this work useful, please cite our paper:
+
+```bibtex
+@article{wang2026towards,
+  title   = {Towards Proactive Detection of User-Side Implicit Conflicts in Human--LLM Dialogue},
+  author  = {Wang, Jinqiang and Zhu, Tao and Ning, Huansheng},
+  journal = {Expert Systems with Applications},
+  volume  = {334},
+  pages   = {134687},
+  year    = {2026},
+  doi     = {10.1016/j.eswa.2026.134687}
+}
+```
+
+**Paper:** [Towards Proactive Detection of User-Side Implicit Conflicts in Human–LLM Dialogue](https://doi.org/10.1016/j.eswa.2026.134687)
+
+
